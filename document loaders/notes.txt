@@ -1,0 +1,77 @@
+
+Core Definitions
+Term	Definition
+GenAI	Subset of DL that generates novel & creative content (text, images, audio, video, code)
+LLM	Large Language Model — Transformer model trained on massive text, predicts next word
+LVM	Large Vision Model — processes and generates images (e.g., Stable Diffusion, ViT)
+Transformer	DL architecture that handles sequential data using self-attention; basis of LLMs
+Fine-Tuning	Retraining a pretrained LLM on new/domain-specific data
+RAG	Retrieval-Augmented Generation — enhancing LLM with external retrieved documents
+Hallucination	LLM generating confident but factually incorrect information
+Session State	Streamlit's st.session_state — persists data across reruns within a session
+Inference	Testing phase — passing a prompt to a trained model to get output
+Prompt Chaining	Breaking a complex task into a sequence of smaller LLM calls (used in Langchain)
+
+Key Code Patterns
+# OpenAI / Groq / Mistral
+client = OpenAI()  |  Groq()  |  Mistral()
+response = client.chat.completions.create(model='...', messages=[{'role':'user','content':prompt}])
+answer = response.choices[0].message.content
+
+# Google Gemini
+client = genai.Client()
+response = client.models.generate_content(model='gemini-2.5-flash', contents=prompt)
+print(response.text)
+
+# Gemini Chat (with memory)
+chat = client.chats.create(model='gemini-2.5-flash')
+response = chat.send_message('Hello')
+history = chat.get_history()
+
+# Store API key safely
+import os
+os.environ['OPENAI_API_KEY'] = open_key   # Then: client = OpenAI()
+
+Generation Parameters Summary
+Parameter	Range	Low Value Effect	High Value Effect
+Temperature	0 to 2	Deterministic (boring), Temp=0=Greedy	Creative, random, unpredictable
+Top-K	1 to vocab size	Restrictive (only top 1-2 words)	More options, more variety
+Top-P	0.0 to 1.0	Conservative (few high-prob words)	Diverse (many candidate words)
+
+ 
+MEMORY TIPS — Easy Tricks to Remember Concepts
+
+1. GenAI vs LLM: 'LLM is a pet, GenAI is the whole zoo' — LLM is just one animal (text) in GenAI's zoo of models (text, image, audio, video)
+
+2. Temperature = Volume Knob on a Radio. Turn it to 0 → same boring station always. Turn it up → more variety in what plays next.
+
+3. Top-K = 'Top-K Friends' — you only pick your next word from your K best friends (high-prob words). More friends = more variety.
+
+4. Top-P = 'Budget Party' — keep inviting words until the total probability reaches your budget (0.9 = 90%). Everyone invited gets equal chance to speak.
+
+5. Session State = 'Sticky Notes' — normal Streamlit variables get erased each run. Session_state is like a sticky note stuck to the wall — it stays.
+
+6. LLMs are Lazy Thinkers — don't just ask 'What is AI?'. Say 'Think step by step and explain AI like I'm 10, using 3 real-world examples'.
+
+7. OPEN vs CLOSED LLM: 'Open = Share the recipe (code+weights). Closed = Order from the restaurant (pay for output, recipe is secret)'.
+
+ 
+TOPIC CONNECTION MAP — Feb 9 → Feb 18
+
+Date	Topic	Builds On / Connects To
+Feb 9	Intro to GenAI & LLM	Foundation: What GenAI is, DL architectures, LLMs, Open vs Closed models. Everything else builds on this.
+Feb 10	LLM APIs	Extends Feb 9: How to ACCESS LLMs via APIs (OpenAI, Gemini, Groq, Mistral). Introduction of hallucination issue.
+Feb 11	Interacting with LLMs	Practical: Setting up OpenAI API. Creating clients. First API call with chat.completions.create().
+Feb 12	Multi-API & Gemini	Extends Feb 11: Same pattern, different providers (Gemini, Groq, Mistral). Shows API patterns are consistent.
+Feb 13	Q&A System	First real application: Simple Q&A. Introduces concept of stateless vs stateful (memory). Rate limits.
+Feb 16	Chatbot with Memory	Extends Feb 13: Solves the 'no memory' problem. Introduces Streamlit frontend + Session State for memory.
+Feb 17	Customizing LLMs	Extends all previous: Chat object (Gemini), 4 ways to customize LLMs. Introduces Temp/Top-P/Top-K, Fine-tuning, RAG concepts.
+Feb 18	Advanced Prompting + Langchain	Deep dive into Temp/Top-K/Top-P. 5 Prompt Engineering techniques. Advanced prompting (CoT, few-shot). Intro to Langchain for chaining.
+
+The Learning Journey — Visualized
+GenAI Concepts (Feb 9)  →  LLM APIs (Feb 10)  →  First API Calls (Feb 11-12)  →  Q&A Application (Feb 13)
+→  Chatbot + Memory (Feb 16)  →  Customization Methods (Feb 17)  →  Advanced Prompting + Langchain (Feb 18)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+End of Notes  —  Advanced Generative AI  |  Feb 9–18, 2026
+Prepared from instructor handwritten notes — all 21 pages analyzed
